@@ -25,11 +25,13 @@ foldersRouter
     const { id, name } = req.body;
     const newFolder = { id, name };
 
-    for (const [key, value] of Object.entries(newFolder))
-      if (value === null)
+    for (const [key, value] of Object.entries(newFolder)) {
+      if (value == null) {
         return res.status(400).json({
           error: { message: `Missing ${key} in request body` }
         });
+      }
+    }
 
     FoldersService.insertFolder(
       req.app.get('db'),
@@ -61,7 +63,6 @@ foldersRouter
         res.folder = folder;
         next();
       })
-      .catch(next);
   })
   .get((req, res, next) => {
     res.json(serializeFolder(res.folder));
